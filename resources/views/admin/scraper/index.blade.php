@@ -6,9 +6,23 @@
 <div class="row g-4 mb-4">
     <div class="col-12">
         <h2 class="fw-bold mb-0">Instagram Scraper</h2>
-        <p class="text-muted mb-0">Scrape dan kelola data Instagram posts</p>
+        <p class="text-muted mb-0">Scrape dan kelola data Instagram posts real-time (Tanpa Database)</p>
     </div>
 </div>
+
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
 
 <!-- Scraper Form -->
 <div class="row g-4 mb-4">
@@ -17,87 +31,94 @@
             <div class="card-body">
                 <h5 class="fw-bold mb-3">
                     <i class="fab fa-instagram text-danger me-2"></i>
-                    Scrape Instagram Profile
+                    Scrape Instagram Profiles
                 </h5>
 
                 <div class="alert alert-info mb-4">
                     <i class="fas fa-info-circle me-2"></i>
-                    <strong>Cara Kerja:</strong> Scraper ini mengambil data publik dari Instagram. Pastikan akun yang ingin di-scrape bersifat <strong>PUBLIC</strong>. Sistem akan mencoba beberapa metode scraping untuk hasil terbaik.
+                    <strong>Cara Kerja:</strong> Pilih akun yang ingin di-scrape, set jumlah post, lalu klik <strong>"Mulai Scraping"</strong>. Data akan tersimpan di session (tidak masuk database).
                 </div>
 
-                <div class="alert alert-warning mb-4">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    <strong>Tips:</strong>
-                    <ul class="mb-0 mt-2">
-                        <li>Gunakan metode "Auto" untuk hasil terbaik</li>
-                        <li>Jika gagal, coba lagi dalam beberapa menit</li>
-                        <li>Akun private tidak dapat di-scrape</li>
-                        <li>Rate limit: Max 10 requests per 5 menit</li>
-                    </ul>
-                </div>
-
-                <form action="{{ route('admin.scraper.scrape') }}" method="POST">
+                <form action="{{ route('admin.scraper.scrape') }}" method="POST" id="scraper-form">
                     @csrf
                     
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-users me-1"></i>Pilih Akun Instagram ({{ count($accounts) }} total)
+                        </label>
+                        
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAll()">
+                                <i class="fas fa-check-double"></i> Pilih Semua
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deselectAll()">
+                                <i class="fas fa-times"></i> Hapus Semua
+                            </button>
+                        </div>
+
+<div class="row g-2">
+    @foreach($accounts as $acc)
+    <div class="col-md-6">
+        <div class="account-checkbox p-2 rounded">
+            <div class="form-check">
+                <input class="form-check-input account-check" type="checkbox" 
+                       name="accounts[]" value="{{ $acc['username'] }}" 
+                       id="acc_{{ $acc['username'] }}" checked>
+                <label class="form-check-label w-100" for="acc_{{ $acc['username'] }}">
+                    <strong>@{{ $acc['username'] }}</strong>
+                    <small class="text-muted d-block">{{ $acc['unit'] }}</small>
+                </label>
+            </div>
+        </div>
+    </div>
+    @endforeach
+</div>
+                        
+                        @error('accounts')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Username Instagram <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text">@</span>
-                                <input type="text" name="username" class="form-control @error('username') is-invalid @enderror" 
-                                       value="{{ old('username') }}" required placeholder="plnuidlampung">
-                            </div>
-                            @error('username')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-list-ol me-1"></i>Jumlah Post per Akun
+                            </label>
+                            <input type="number" name="limit" class="form-control @error('limit') is-invalid @enderror" 
+                                   value="{{ old('limit', 12) }}" min="1" max="50" required>
+                            <small class="text-muted">Maksimal 50 posts per akun</small>
+                            @error('limit')
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Nama Unit</label>
-                            <input type="text" name="unit_name" class="form-control" 
-                                   value="{{ old('unit_name', 'Manual') }}" placeholder="UID Lampung">
-                        </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fw-semibold">Kategori</label>
-                            <select name="kategori" class="form-select">
-                                <option value="Korporat">Korporat</option>
-                                <option value="Regional">Regional</option>
-                                <option value="Unit">Unit</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fw-semibold">Jumlah Post</label>
-                            <input type="number" name="limit" class="form-control" 
-                                   value="{{ old('limit', 20) }}" min="1" max="50">
-                            <small class="text-muted">Maksimal 50 posts</small>
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fw-semibold">Metode Scraping</label>
-                            <select name="method" class="form-select">
-                                <option value="auto">Auto (Coba Semua)</option>
-                                <option value="direct">Direct Instagram</option>
-                                <option value="picuki">Via Picuki</option>
-                                <option value="imginn">Via Imginn</option>
-                            </select>
-                            <small class="text-muted">Auto akan mencoba semua metode</small>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary-custom">
+                    <button type="submit" class="btn btn-primary-custom" id="scrape-btn">
                         <i class="fas fa-download me-1"></i>Mulai Scraping
                     </button>
                 </form>
+
+                <!-- Progress Indicator -->
+                <div id="progress-container" class="mt-4" style="display:none;">
+                    <h6 class="fw-bold mb-3">
+                        <i class="fas fa-spinner fa-spin me-2"></i>Scraping Progress
+                    </h6>
+                    
+                    <div class="progress mb-2" style="height: 25px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                             role="progressbar" style="width: 100%;">
+                            <span>Processing...</span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-muted small mb-0">Mohon tunggu, sedang mengambil data dari Instagram...</p>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="col-lg-4">
-        <div class="card-custom">
+        <div class="card-custom mb-4">
             <div class="card-body">
                 <h5 class="fw-bold mb-3">
                     <i class="fas fa-chart-bar text-success me-2"></i>
@@ -105,92 +126,206 @@
                 </h5>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">Total Posts</span>
-                    <h4 class="fw-bold mb-0">{{ $posts->total() }}</h4>
+                    <h4 class="fw-bold mb-0">{{ number_format($stats['total']) }}</h4>
                 </div>
+                @if($stats['total'] > 0)
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Total Likes</span>
+                    <h5 class="fw-bold mb-0 text-danger">{{ number_format($stats['likes']) }}</h5>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Total Comments</span>
+                    <h5 class="fw-bold mb-0 text-info">{{ number_format($stats['comments']) }}</h5>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Total Views</span>
+                    <h5 class="fw-bold mb-0 text-warning">{{ number_format($stats['views']) }}</h5>
+                </div>
+                <hr>
+                @endif
+                
                 <div class="d-flex gap-2">
+                    @if($stats['total'] > 0)
                     <a href="{{ route('admin.scraper.export') }}" class="btn btn-success btn-sm flex-fill">
                         <i class="fas fa-file-excel me-1"></i>Export CSV
                     </a>
+                    <form action="{{ route('admin.scraper.clear') }}" method="POST" class="flex-fill">
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-sm w-100" 
+                                onclick="return confirm('Yakin ingin menghapus semua data scraping dari session?')">
+                            <i class="fas fa-trash me-1"></i>Clear
+                        </button>
+                    </form>
+                    @else
+                    <button class="btn btn-secondary btn-sm w-100" disabled>
+                        <i class="fas fa-file-excel me-1"></i>Export CSV
+                    </button>
+                    @endif
                 </div>
+            </div>
+        </div>
+
+        <div class="card-custom">
+            <div class="card-body">
+                <h5 class="fw-bold mb-3">
+                    <i class="fas fa-info-circle text-primary me-2"></i>
+                    Informasi
+                </h5>
+                <ul class="list-unstyled small mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Scraping dari profil publik saja
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Data tersimpan di session (tidak di DB)
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Mendapatkan likes, comments, views
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-clock text-warning me-2"></i>
+                        Proses ~0.5 detik per akun
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-exclamation-triangle text-danger me-2"></i>
+                        Hanya untuk akun PUBLIC
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Posts Table -->
+<!-- Results Table -->
+@if(count($scrapedData) > 0)
 <div class="card-custom">
     <div class="card-body">
         <h5 class="fw-bold mb-4">
             <i class="fas fa-table text-primary me-2"></i>
-            Data Instagram Posts
+            Hasil Scraping ({{ count($scrapedData) }} posts)
         </h5>
 
-        @if($posts->isEmpty())
-            <div class="text-center py-5 text-muted">
-                <i class="fab fa-instagram fa-4x mb-3 opacity-50"></i>
-                <h5>Belum ada data</h5>
-                <p>Mulai scraping untuk mengumpulkan data Instagram posts</p>
-            </div>
-        @else
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Judul</th>
-                            <th>Akun</th>
-                            <th>Tipe</th>
-                            <th>Unit</th>
-                            <th>Likes</th>
-                            <th>Comments</th>
-                            <th>Views</th>
-                            <th>Engagement</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($posts as $post)
-                        <tr>
-                            <td>{{ $post->tanggal->format('d M Y') }}</td>
-                            <td>
-                                <div class="fw-semibold">{{ Str::limit($post->judul_pemberitaan, 40) }}</div>
-                                <a href="{{ $post->link_pemberitaan }}" target="_blank" class="small text-muted">
-                                    <i class="fas fa-external-link-alt me-1"></i>Lihat Post
-                                </a>
-                            </td>
-                            <td>{{ $post->akun }}</td>
-                            <td>
-                                <span class="badge bg-{{ $post->tipe_konten === 'Reels' ? 'danger' : 'primary' }}">
-                                    {{ $post->tipe_konten }}
-                                </span>
-                            </td>
-                            <td>{{ $post->pic_unit }}</td>
-                            <td><i class="fas fa-heart text-danger me-1"></i>{{ number_format($post->likes) }}</td>
-                            <td><i class="fas fa-comment text-primary me-1"></i>{{ number_format($post->comments) }}</td>
-                            <td><i class="fas fa-eye text-info me-1"></i>{{ number_format($post->views) }}</td>
-                            <td>
-                                <span class="badge bg-success">{{ $post->engagement_rate }}%</span>
-                            </td>
-                            <td>
-                                <form action="{{ route('admin.scraper.destroy', $post) }}" method="POST" 
-                                      onsubmit="return confirm('Yakin ingin menghapus data ini?')" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="mt-4">
-                {{ $posts->links() }}
-            </div>
-        @endif
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Akun</th>
+                        <th>Unit</th>
+                        <th>Caption</th>
+                        <th>Tipe</th>
+                        <th>Likes</th>
+                        <th>Comments</th>
+                        <th>Views</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($scrapedData as $data)
+                    <tr>
+                        <td>{{ $data['tanggal'] }}</td>
+                        <td>
+                            <div class="fw-semibold">@{{ $data['username'] }}</div>
+                            <small class="text-muted">{{ $data['kategori'] }}</small>
+                        </td>
+                        <td>{{ $data['unit'] }}</td>
+                        <td>
+                            <div style="max-width: 300px;">
+                                {{ Str::limit($data['caption'], 80) }}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-{{ $data['tipe'] === 'Reels/Video' ? 'danger' : 'primary' }}">
+                                {{ $data['tipe'] }}
+                            </span>
+                        </td>
+                        <td>
+                            <i class="fas fa-heart text-danger me-1"></i>
+                            {{ number_format($data['likes']) }}
+                        </td>
+                        <td>
+                            <i class="fas fa-comment text-primary me-1"></i>
+                            {{ number_format($data['comments']) }}
+                        </td>
+                        <td>
+                            <i class="fas fa-eye text-info me-1"></i>
+                            {{ number_format($data['views']) }}
+                        </td>
+                        <td>
+                            <a href="{{ $data['link'] }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+@else
+<div class="card-custom">
+    <div class="card-body text-center py-5">
+        <i class="fab fa-instagram fa-4x mb-3 text-muted opacity-50"></i>
+        <h5 class="text-muted">Belum ada data scraping</h5>
+        <p class="text-muted">Pilih akun dan klik "Mulai Scraping" untuk mengambil data Instagram</p>
+    </div>
+</div>
+@endif
+
+<style>
+.account-checkbox {
+    transition: background 0.2s;
+}
+.account-checkbox:hover {
+    background: rgba(0, 82, 163, 0.05);
+}
+.card-custom {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.btn-primary-custom {
+    background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    color: white;
+}
+.btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,82,163,0.3);
+}
+</style>
+
+@push('scripts')
+<script>
+function selectAll() {
+    document.querySelectorAll('.account-check').forEach(cb => cb.checked = true);
+}
+
+function deselectAll() {
+    document.querySelectorAll('.account-check').forEach(cb => cb.checked = false);
+}
+
+document.getElementById('scraper-form').addEventListener('submit', function(e) {
+    const btn = document.getElementById('scrape-btn');
+    const progress = document.getElementById('progress-container');
+    
+    // Check if at least one account is selected
+    const checked = document.querySelectorAll('.account-check:checked').length;
+    if (checked === 0) {
+        e.preventDefault();
+        alert('Pilih minimal 1 akun untuk di-scrape!');
+        return false;
+    }
+    
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Scraping...';
+    progress.style.display = 'block';
+});
+</script>
+@endpush
 @endsection

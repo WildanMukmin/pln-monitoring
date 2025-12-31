@@ -29,22 +29,26 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard');
         
         // Submissions management
-        Route::get('/submissions', [SubmissionController::class, 'adminIndex'])->name('submissions.index');
-        Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
-        Route::post('/submissions/{submission}/approve', [SubmissionController::class, 'approve'])->name('submissions.approve');
-        Route::post('/submissions/{submission}/reject', [SubmissionController::class, 'reject'])->name('submissions.reject');
-        Route::post('/submissions/{submission}/upload-results', [SubmissionController::class, 'uploadResults'])->name('submissions.upload-results');
+        Route::prefix('submissions')->name('submissions.')->group(function () {
+            Route::get('/', [SubmissionController::class, 'adminIndex'])->name('index');
+            Route::get('/{submission}', [SubmissionController::class, 'show'])->name('show');
+            Route::post('/{submission}/approve', [SubmissionController::class, 'approve'])->name('approve');
+            Route::post('/{submission}/reject', [SubmissionController::class, 'reject'])->name('reject');
+            Route::post('/{submission}/upload-results', [SubmissionController::class, 'uploadResults'])->name('upload-results');
+        });
         
         // Instagram Scraper
-        Route::get('/scraper', [ScraperController::class, 'index'])->name('scraper.index');
-        Route::post('/scraper/scrape', [ScraperController::class, 'scrape'])->name('scraper.scrape');
-        Route::get('/scraper/export', [ScraperController::class, 'export'])->name('scraper.export');
-        Route::delete('/scraper/{post}', [ScraperController::class, 'destroy'])->name('scraper.destroy');
-        
-        // Test route (only in local environment)
-        if (app()->environment('local')) {
-            Route::get('/scraper/test', [ScraperController::class, 'test'])->name('scraper.test');
-        }
+        Route::prefix('scraper')->name('scraper.')->group(function () {
+            Route::get('/', [ScraperController::class, 'index'])->name('index');
+            Route::post('/scrape', [ScraperController::class, 'scrape'])->name('scrape');
+            Route::get('/export', [ScraperController::class, 'export'])->name('export');
+            Route::post('/clear', [ScraperController::class, 'clear'])->name('clear');
+            
+            // Test route (only in local environment)
+            if (app()->environment('local')) {
+                Route::get('/test', [ScraperController::class, 'test'])->name('test');
+            }
+        });
     });
     
     // User routes
@@ -52,13 +56,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'userDashboard'])->name('dashboard');
         
         // Submissions
-        Route::get('/submissions', [SubmissionController::class, 'userIndex'])->name('submissions.index');
-        Route::get('/submissions/create', [SubmissionController::class, 'create'])->name('submissions.create');
-        Route::post('/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
-        Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
-        Route::get('/submissions/{submission}/edit', [SubmissionController::class, 'edit'])->name('submissions.edit');
-        Route::put('/submissions/{submission}', [SubmissionController::class, 'update'])->name('submissions.update');
-        Route::delete('/submissions/{submission}', [SubmissionController::class, 'destroy'])->name('submissions.destroy');
+        Route::prefix('submissions')->name('submissions.')->group(function () {
+            Route::get('/', [SubmissionController::class, 'userIndex'])->name('index');
+            Route::get('/create', [SubmissionController::class, 'create'])->name('create');
+            Route::post('/', [SubmissionController::class, 'store'])->name('store');
+            Route::get('/{submission}', [SubmissionController::class, 'show'])->name('show');
+            Route::get('/{submission}/edit', [SubmissionController::class, 'edit'])->name('edit');
+            Route::put('/{submission}', [SubmissionController::class, 'update'])->name('update');
+            Route::delete('/{submission}', [SubmissionController::class, 'destroy'])->name('destroy');
+        });
     });
 });
 
@@ -68,4 +74,4 @@ Route::get('/', function () {
         return redirect()->route(auth()->user()->isAdmin() ? 'admin.dashboard' : 'user.dashboard');
     }
     return redirect()->route('login');
-});
+})->name('home');
