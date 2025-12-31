@@ -11,11 +11,16 @@ class SubmissionController extends Controller
     /**
      * Display all submissions (Admin)
      */
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $submissions = Submission::with('user')
-            ->latest()
-            ->paginate(20);
+        $query = Submission::with('user')->latest();
+
+        // Filter by status if provided
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $submissions = $query->paginate(20);
 
         return view('admin.submissions.index', compact('submissions'));
     }
@@ -191,10 +196,15 @@ class SubmissionController extends Controller
             'hasil_link_drive.*' => 'url',
         ]);
 
+        // Filter out empty values
+        $foto = array_filter($validated['hasil_link_foto'] ?? [], fn($v) => !empty($v));
+        $video = array_filter($validated['hasil_link_video'] ?? [], fn($v) => !empty($v));
+        $drive = array_filter($validated['hasil_link_drive'] ?? [], fn($v) => !empty($v));
+
         $submission->update([
-            'hasil_link_foto' => $validated['hasil_link_foto'] ?? [],
-            'hasil_link_video' => $validated['hasil_link_video'] ?? [],
-            'hasil_link_drive' => $validated['hasil_link_drive'] ?? [],
+            'hasil_link_foto' => !empty($foto) ? $foto : null,
+            'hasil_link_video' => !empty($video) ? $video : null,
+            'hasil_link_drive' => !empty($drive) ? $drive : null,
             'status' => 'completed',
             'completed_at' => now(),
         ]);

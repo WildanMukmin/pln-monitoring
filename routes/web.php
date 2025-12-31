@@ -40,6 +40,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/scraper/scrape', [ScraperController::class, 'scrape'])->name('scraper.scrape');
         Route::get('/scraper/export', [ScraperController::class, 'export'])->name('scraper.export');
         Route::delete('/scraper/{post}', [ScraperController::class, 'destroy'])->name('scraper.destroy');
+        
+        // Test route (only in local environment)
+        if (app()->environment('local')) {
+            Route::get('/scraper/test', [ScraperController::class, 'test'])->name('scraper.test');
+        }
     });
     
     // User routes
