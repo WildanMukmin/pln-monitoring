@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
+use InstagramScraper\Instagram;
+use Phpfastcache\Helper\Psr16Adapter;
+
 
 class ScraperController extends Controller
 {
@@ -164,84 +167,46 @@ class ScraperController extends Controller
     private function scrapeInstagram($username, $limit = 12)
     {
         $posts = [];
-        
+
         try {
-            $url = "https://www.instagram.com/{$username}";
+            // Cache wajib untuk library ini
+            $cache = new Psr16Adapter('Files');
 
-            $ch = curl_init();
-            curl_setopt_array($ch, [
-                CURLOPT_URL => $url,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_TIMEOUT => 30,
+            // Login (pakai akun IG biasa saja)
+            $instagram = Instagram::withCredentials(
+                $cache,
+                'kangjulid.id_',
+                '1234567890-='
+            );
 
-                CURLOPT_USERAGENT => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
+            $instagram->login();
 
-                CURLOPT_HTTPHEADER => [
-                    "Accept: */*",
-                    "X-IG-App-ID: 936619743392459",
-                    "X-CSRFToken: fo-hOmkMZuUl1f6mIC3lEF",               // ambil dari cookie kamu
-                    "Referer: https://www.instagram.com/",
-                    "Cookie: csrftoken=fo-hOmkMZuUl1f6mIC3lEF; sessionid=4766759462%3AzNTx8cgv8JJwZn%3A4%3AAYjzLQBgIqLGdCDvAIu-iLIkq5KFLHSJ0hFFVcvViQM; ds_user_id=4766759462; ig_did=786DB252-6AAA-402B-8C42-458C3C320144;"
-                ],
-            ]);
+            // Ambil akun
+            $account = $instagram->getAccount($username);
 
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_reset($ch);
+            // Ambil postingan
+            $medias = $instagram->getMedias($account->getUsername(), $limit);
 
-            // dd($response);
-
-
-            if ($httpCode == 200 && $response) {
-                $data = json_decode($response, true);
-                
-                // Extract posts from response
-                if (isset($data['graphql']['user']['edge_owner_to_timeline_media']['edges'])) {
-                    $edges = $data['graphql']['user']['edge_owner_to_timeline_media']['edges'];
-                    
-                    foreach (array_slice($edges, 0, $limit) as $edge) {
-                        $node = $edge['node'];
-                        
-                        $posts[] = [
-                            'shortcode' => $node['shortcode'] ?? uniqid(),
-                            'caption' => isset($node['edge_media_to_caption']['edges'][0]['node']['text']) 
-                                ? substr($node['edge_media_to_caption']['edges'][0]['node']['text'], 0, 200) 
-                                : 'No caption',
-                            'likes' => $node['edge_liked_by']['count'] ?? 0,
-                            'comments' => $node['edge_media_to_comment']['count'] ?? 0,
-                            'timestamp' => $node['taken_at_timestamp'] ?? time(),
-                            'is_video' => $node['is_video'] ?? false,
-                            'video_views' => $node['video_view_count'] ?? 0,
-                            'thumbnail' => $node['thumbnail_src'] ?? '',
-                        ];
-                    }
-                }
-            }
-            
-        } catch (\Exception $e) {
-            Log::error("Error scraping @{$username}: " . $e->getMessage());
-        }
-        
-        // Fallback: Generate sample data if scraping fails (for development/testing)
-        if (empty($posts)) {
-            for ($i = 0; $i < min($limit, 6); $i++) {
+            foreach ($medias as $media) {
                 $posts[] = [
-                    'shortcode' => uniqid(),
-                    'caption' => "Sample post #{$i} from @{$username} - " . now()->subDays($i)->format('d M Y'),
-                    'likes' => rand(100, 5000),
-                    'comments' => rand(10, 500),
-                    'timestamp' => now()->subDays($i)->timestamp,
-                    'is_video' => rand(0, 1) == 1,
-                    'video_views' => rand(0, 1) == 1 ? rand(1000, 50000) : 0,
-                    'thumbnail' => 'https://via.placeholder.com/300x300/0052a3/ffffff?text=' . urlencode($username),
+                    'shortcode' => $media->getShortCode(),
+                    'caption' => substr($media->getCaption(), 0, 200),
+                    'likes' => $media->getLikesCount(),
+                    'comments' => $media->getCommentsCount(),
+                    'timestamp' => $media->getCreatedTime(),
+                    'is_video' => $media->getType() === 'video',
+                    'video_views' => $media->getType() === 'video' ? $media->getVideoViews() : 0,
+                    'thumbnail' => $media->getImageHighResolutionUrl(),
                 ];
             }
+
+        } catch (\Exception $e) {
+            Log::error("Scraping gagal @$username : " . $e->getMessage());
         }
-        
+
         return $posts;
     }
+
 
     private function formatTanggal($timestamp)
     {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "edffb75cc32d96b6612a88595e284f1f",
+    "content-hash": "25c52552e8d950aa4b79f04826abb901",
     "packages": [
         {
             "name": "brick/math",
@@ -507,63 +507,6 @@
                 }
             ],
             "time": "2025-03-06T22:45:56+00:00"
-        },
-        {
-            "name": "fabpot/goutte",
-            "version": "v4.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FriendsOfPHP/Goutte.git",
-                "reference": "e3f28671c87a48a0f13ada1baea0d95acc2138c3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/Goutte/zipball/e3f28671c87a48a0f13ada1baea0d95acc2138c3",
-                "reference": "e3f28671c87a48a0f13ada1baea0d95acc2138c3",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.3",
-                "symfony/browser-kit": "^4.4|^5.0|^6.0",
-                "symfony/css-selector": "^4.4|^5.0|^6.0",
-                "symfony/deprecation-contracts": "^2.1|^3",
-                "symfony/dom-crawler": "^4.4|^5.0|^6.0",
-                "symfony/http-client": "^4.4|^5.0|^6.0",
-                "symfony/mime": "^4.4|^5.0|^6.0"
-            },
-            "require-dev": {
-                "symfony/phpunit-bridge": "^6.0"
-            },
-            "type": "application",
-            "autoload": {
-                "psr-4": {
-                    "Goutte\\": "Goutte"
-                },
-                "exclude-from-classmap": [
-                    "Goutte/Tests"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                }
-            ],
-            "description": "A simple PHP Web Scraper",
-            "homepage": "https://github.com/FriendsOfPHP/Goutte",
-            "keywords": [
-                "scraper"
-            ],
-            "support": {
-                "issues": "https://github.com/FriendsOfPHP/Goutte/issues",
-                "source": "https://github.com/FriendsOfPHP/Goutte/tree/v4.0.3"
-            },
-            "abandoned": "symfony/browser-kit",
-            "time": "2023-04-01T09:05:33+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -1946,71 +1889,55 @@
             "time": "2024-09-21T08:32:55+00:00"
         },
         {
-            "name": "masterminds/html5",
-            "version": "2.10.0",
+            "name": "mashape/unirest-php",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Masterminds/html5-php.git",
-                "reference": "fcf91eb64359852f00d921887b219479b4f21251"
+                "url": "https://github.com/Mashape/unirest-php.git",
+                "reference": "842c0f242dfaaf85f16b72e217bf7f7c19ab12cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/fcf91eb64359852f00d921887b219479b4f21251",
-                "reference": "fcf91eb64359852f00d921887b219479b4f21251",
+                "url": "https://api.github.com/repos/Mashape/unirest-php/zipball/842c0f242dfaaf85f16b72e217bf7f7c19ab12cb",
+                "reference": "842c0f242dfaaf85f16b72e217bf7f7c19ab12cb",
                 "shasum": ""
             },
             "require": {
-                "ext-dom": "*",
-                "php": ">=5.3.0"
+                "ext-curl": "*",
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.7.21 || ^6 || ^7 || ^8 || ^9"
+                "codeclimate/php-test-reporter": "0.1.*",
+                "phpunit/phpunit": "~4.4"
+            },
+            "suggest": {
+                "ext-json": "Allows using JSON Bodies for sending and parsing requests"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.7-dev"
-                }
-            },
             "autoload": {
-                "psr-4": {
-                    "Masterminds\\": "src"
+                "psr-0": {
+                    "Unirest\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Matt Butcher",
-                    "email": "technosophos@gmail.com"
-                },
-                {
-                    "name": "Matt Farina",
-                    "email": "matt@mattfarina.com"
-                },
-                {
-                    "name": "Asmir Mustafic",
-                    "email": "goetas@gmail.com"
-                }
-            ],
-            "description": "An HTML5 parser and serializer.",
-            "homepage": "http://masterminds.github.io/html5-php",
+            "description": "Unirest PHP",
+            "homepage": "https://github.com/Mashape/unirest-php",
             "keywords": [
-                "HTML5",
-                "dom",
-                "html",
-                "parser",
-                "querypath",
-                "serializer",
-                "xml"
+                "client",
+                "curl",
+                "http",
+                "https",
+                "rest"
             ],
             "support": {
-                "issues": "https://github.com/Masterminds/html5-php/issues",
-                "source": "https://github.com/Masterminds/html5-php/tree/2.10.0"
+                "email": "opensource@mashape.com",
+                "issues": "https://github.com/Mashape/unirest-php/issues",
+                "source": "https://github.com/Mashape/unirest-php/tree/master"
             },
-            "time": "2025-07-25T09:04:22+00:00"
+            "time": "2016-08-11T17:49:21+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2520,6 +2447,150 @@
             "time": "2024-11-21T10:36:35+00:00"
         },
         {
+            "name": "phpfastcache/phpfastcache",
+            "version": "5.0.21",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPSocialNetwork/phpfastcache.git",
+                "reference": "e546671f4374e2a421c074b5c24c732c6ec58aae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPSocialNetwork/phpfastcache/zipball/e546671f4374e2a421c074b5c24c732c6ec58aae",
+                "reference": "e546671f4374e2a421c074b5c24c732c6ec58aae",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.5.0",
+                "phpfastcache/phpssdb": "~1.0.0",
+                "predis/predis": "~1.1.0",
+                "psr/cache": "~1.0.0"
+            },
+            "suggest": {
+                "ext-apc": "*",
+                "ext-intl": "*",
+                "ext-mbstring": "*",
+                "ext-memcache": "*",
+                "ext-memcached": "*",
+                "ext-predis": "*",
+                "ext-redis": "*",
+                "ext-sqlite": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "phpFastCache\\": "src/phpFastCache/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Khoa Bui",
+                    "email": "khoaofgod@gmail.com",
+                    "homepage": "http://www.phpfastcache.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Georges.L",
+                    "email": "contact@geolim4.com",
+                    "homepage": "https://github.com/Geolim4",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP Cache Class - Reduce your database call using cache system. PhpFastCache handles a lot of drivers such as Apc(u), CouchBase, Mongodb, Files, (P)redis, Leveldb, Memcache(d), Ssdb, Sqlite, Wincache, Xcache, Zend Data Cache.",
+            "homepage": "http://www.phpfastcache.com",
+            "keywords": [
+                "LevelDb",
+                "apc",
+                "apcu",
+                "cache",
+                "cache class",
+                "caching",
+                "cookie",
+                "couchbase",
+                "files cache",
+                "memcache",
+                "memcached",
+                "mongodb",
+                "mysql cache",
+                "pdo cache",
+                "php cache",
+                "predis",
+                "redis",
+                "ssdb",
+                "wincache",
+                "xcache",
+                "zend",
+                "zend data cache",
+                "zend disk cache",
+                "zend memory cache",
+                "zend server"
+            ],
+            "support": {
+                "issues": "https://github.com/PHPSocialNetwork/phpfastcache/issues",
+                "source": "https://github.com/PHPSocialNetwork/phpfastcache/tree/v5"
+            },
+            "time": "2018-03-01T22:13:40+00:00"
+        },
+        {
+            "name": "phpfastcache/phpssdb",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPSocialNetwork/phpssdb.git",
+                "reference": "60cc285bf622664d9899da699503754259e8c970"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPSocialNetwork/phpssdb/zipball/60cc285bf622664d9899da699503754259e8c970",
+                "reference": "60cc285bf622664d9899da699503754259e8c970",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "phpssdb\\": "src/phpssdb/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Khoa Bui",
+                    "email": "khoaofgod@gmail.com",
+                    "homepage": "http://www.phpfastcache.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Georges.L",
+                    "email": "contact@geolim4.com",
+                    "homepage": "https://github.com/Geolim4",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP SSDB Driver for phpFastCache",
+            "homepage": "http://www.phpfastcache.com",
+            "keywords": [
+                "cache",
+                "driver",
+                "ssdb"
+            ],
+            "support": {
+                "issues": "https://github.com/PHPSocialNetwork/phpssdb/issues",
+                "source": "https://github.com/PHPSocialNetwork/phpssdb/tree/master"
+            },
+            "time": "2017-04-21T22:22:57+00:00"
+        },
+        {
             "name": "phpoption/phpoption",
             "version": "1.9.5",
             "source": {
@@ -2593,6 +2664,121 @@
                 }
             ],
             "time": "2025-12-27T19:41:33+00:00"
+        },
+        {
+            "name": "predis/predis",
+            "version": "v1.1.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/predis/predis.git",
+                "reference": "a2fb02d738bedadcffdbb07efa3a5e7bd57f8d6e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/predis/predis/zipball/a2fb02d738bedadcffdbb07efa3a5e7bd57f8d6e",
+                "reference": "a2fb02d738bedadcffdbb07efa3a5e7bd57f8d6e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net",
+                    "role": "Creator & Maintainer"
+                },
+                {
+                    "name": "Till Krüss",
+                    "homepage": "https://till.im",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/predis/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "support": {
+                "issues": "https://github.com/predis/predis/issues",
+                "source": "https://github.com/predis/predis/tree/v1.1.10"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/tillkruss",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-01-05T17:46:08+00:00"
+        },
+        {
+            "name": "psr/cache",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/cache.git",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for caching libraries",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr-6"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/cache/tree/master"
+            },
+            "time": "2016-08-06T20:24:11+00:00"
         },
         {
             "name": "psr/clock",
@@ -3086,6 +3272,59 @@
             "time": "2025-12-17T14:35:46+00:00"
         },
         {
+            "name": "raiym/instagram-php-scraper",
+            "version": "v0.8.35",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/postaddictme/instagram-php-scraper.git",
+                "reference": "89ab40759528517a5f2c7824abddd432283ff62a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/postaddictme/instagram-php-scraper/zipball/89ab40759528517a5f2c7824abddd432283ff62a",
+                "reference": "89ab40759528517a5f2c7824abddd432283ff62a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "mashape/unirest-php": "3.0.*",
+                "php": ">=5.4.0",
+                "phpfastcache/phpfastcache": "5.0.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "InstagramScraper\\": "src/InstagramScraper/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "raiym",
+                    "email": "r.kapishev@gmail.com"
+                }
+            ],
+            "description": "Instagram PHP Scraper. Get account information, photos and videos without any authorization",
+            "homepage": "https://github.com/raiym/instagram-php-scraper",
+            "keywords": [
+                "instagram",
+                "scraper"
+            ],
+            "support": {
+                "email": "r.kapishev@gmail.com",
+                "issues": "https://github.com/postaddictme/instagram-php-scraper/issues",
+                "source": "https://github.com/postaddictme/instagram-php-scraper/tree/master"
+            },
+            "time": "2019-08-14T10:52:12+00:00"
+        },
+        {
             "name": "ralouphie/getallheaders",
             "version": "3.0.3",
             "source": {
@@ -3282,78 +3521,6 @@
                 "source": "https://github.com/ramsey/uuid/tree/4.9.2"
             },
             "time": "2025-12-14T04:43:48+00:00"
-        },
-        {
-            "name": "symfony/browser-kit",
-            "version": "v6.4.28",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/browser-kit.git",
-                "reference": "067e301786bbb58048077fc10507aceb18226e23"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/067e301786bbb58048077fc10507aceb18226e23",
-                "reference": "067e301786bbb58048077fc10507aceb18226e23",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1",
-                "symfony/dom-crawler": "^5.4|^6.0|^7.0"
-            },
-            "require-dev": {
-                "symfony/css-selector": "^5.4|^6.0|^7.0",
-                "symfony/http-client": "^5.4|^6.0|^7.0",
-                "symfony/mime": "^5.4|^6.0|^7.0",
-                "symfony/process": "^5.4|^6.0|^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\BrowserKit\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Simulates the behavior of a web browser, allowing you to make requests, click on links and submit forms programmatically",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/browser-kit/tree/v6.4.28"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2025-10-16T22:35:35+00:00"
         },
         {
             "name": "symfony/console",
@@ -3588,77 +3755,6 @@
                 }
             ],
             "time": "2024-09-25T14:21:43+00:00"
-        },
-        {
-            "name": "symfony/dom-crawler",
-            "version": "v6.4.25",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "976302990f9f2a6d4c07206836dd4ca77cae9524"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/976302990f9f2a6d4c07206836dd4ca77cae9524",
-                "reference": "976302990f9f2a6d4c07206836dd4ca77cae9524",
-                "shasum": ""
-            },
-            "require": {
-                "masterminds/html5": "^2.6",
-                "php": ">=8.1",
-                "symfony/polyfill-ctype": "~1.8",
-                "symfony/polyfill-mbstring": "~1.0"
-            },
-            "require-dev": {
-                "symfony/css-selector": "^5.4|^6.0|^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\DomCrawler\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Eases DOM navigation for HTML and XML documents",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/dom-crawler/tree/v6.4.25"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2025-08-05T18:56:08+00:00"
         },
         {
             "name": "symfony/error-handler",
@@ -3966,182 +4062,6 @@
                 }
             ],
             "time": "2025-10-15T18:32:00+00:00"
-        },
-        {
-            "name": "symfony/http-client",
-            "version": "v6.4.30",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/http-client.git",
-                "reference": "a67de2002d72f76ce7c57f830c4df503febc8d77"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/a67de2002d72f76ce7c57f830c4df503febc8d77",
-                "reference": "a67de2002d72f76ce7c57f830c4df503febc8d77",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1",
-                "psr/log": "^1|^2|^3",
-                "symfony/deprecation-contracts": "^2.5|^3",
-                "symfony/http-client-contracts": "~3.4.4|^3.5.2",
-                "symfony/polyfill-php83": "^1.29",
-                "symfony/service-contracts": "^2.5|^3"
-            },
-            "conflict": {
-                "php-http/discovery": "<1.15",
-                "symfony/http-foundation": "<6.3"
-            },
-            "provide": {
-                "php-http/async-client-implementation": "*",
-                "php-http/client-implementation": "*",
-                "psr/http-client-implementation": "1.0",
-                "symfony/http-client-implementation": "3.0"
-            },
-            "require-dev": {
-                "amphp/amp": "^2.5",
-                "amphp/http-client": "^4.2.1",
-                "amphp/http-tunnel": "^1.0",
-                "amphp/socket": "^1.1",
-                "guzzlehttp/promises": "^1.4|^2.0",
-                "nyholm/psr7": "^1.0",
-                "php-http/httplug": "^1.0|^2.0",
-                "psr/http-client": "^1.0",
-                "symfony/dependency-injection": "^5.4|^6.0|^7.0",
-                "symfony/http-kernel": "^5.4|^6.0|^7.0",
-                "symfony/messenger": "^5.4|^6.0|^7.0",
-                "symfony/process": "^5.4|^6.0|^7.0",
-                "symfony/stopwatch": "^5.4|^6.0|^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\HttpClient\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Provides powerful methods to fetch HTTP resources synchronously or asynchronously",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "http"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/http-client/tree/v6.4.30"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2025-12-04T16:42:50+00:00"
-        },
-        {
-            "name": "symfony/http-client-contracts",
-            "version": "v3.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/http-client-contracts.git",
-                "reference": "75d7043853a42837e68111812f4d964b01e5101c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client-contracts/zipball/75d7043853a42837e68111812f4d964b01e5101c",
-                "reference": "75d7043853a42837e68111812f4d964b01e5101c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1"
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/contracts",
-                    "name": "symfony/contracts"
-                },
-                "branch-alias": {
-                    "dev-main": "3.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Contracts\\HttpClient\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Test/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Generic abstractions related to HTTP clients",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "abstractions",
-                "contracts",
-                "decoupling",
-                "interfaces",
-                "interoperability",
-                "standards"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/http-client-contracts/tree/v3.6.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2025-04-29T11:18:49+00:00"
         },
         {
             "name": "symfony/http-foundation",

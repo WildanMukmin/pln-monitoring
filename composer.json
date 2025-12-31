@@ -14,9 +14,8 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
-        "symfony/dom-crawler": "^6.0",
-        "symfony/css-selector": "^6.0",
-        "fabpot/goutte": "^4.0"
+        "phpfastcache/phpfastcache": "^5.0",
+        "raiym/instagram-php-scraper": "^0.8.35"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
