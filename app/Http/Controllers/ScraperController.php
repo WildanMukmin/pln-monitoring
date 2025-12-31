@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class ScraperController extends Controller
 {
     // Daftar 20 akun Instagram PLN
     private $accounts = [
-        ['username' => 'plnuidlampung', 'unit' => 'UID Lampung', 'kategori' => 'Korporat'],
+        ['username' => 'plndislampung', 'unit' => 'UID Lampung', 'kategori' => 'Korporat'],
         ['username' => 'pln_id', 'unit' => 'PLN Pusat', 'kategori' => 'Korporat'],
         ['username' => 'plnuidjabar', 'unit' => 'UID Jabar', 'kategori' => 'Korporat'],
         ['username' => 'plnuidjatim', 'unit' => 'UID Jatim', 'kategori' => 'Korporat'],
@@ -165,9 +166,8 @@ class ScraperController extends Controller
         $posts = [];
         
         try {
-            // Method 1: Try to scrape from Instagram Web
-            $url = "https://www.instagram.com/{$username}/?__a=1&__d=dis";
-            
+            $url = "https://www.instagram.com/{$username}";
+
             $ch = curl_init();
             curl_setopt_array($ch, [
                 CURLOPT_URL => $url,
@@ -175,19 +175,25 @@ class ScraperController extends Controller
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_TIMEOUT => 30,
-                CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+
+                CURLOPT_USERAGENT => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
+
                 CURLOPT_HTTPHEADER => [
-                    'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                    'Accept-Language: en-US,en;q=0.5',
-                    'Connection: keep-alive',
-                    'Upgrade-Insecure-Requests: 1',
+                    "Accept: */*",
+                    "X-IG-App-ID: 936619743392459",
+                    "X-CSRFToken: fo-hOmkMZuUl1f6mIC3lEF",               // ambil dari cookie kamu
+                    "Referer: https://www.instagram.com/",
+                    "Cookie: csrftoken=fo-hOmkMZuUl1f6mIC3lEF; sessionid=4766759462%3AzNTx8cgv8JJwZn%3A4%3AAYjzLQBgIqLGdCDvAIu-iLIkq5KFLHSJ0hFFVcvViQM; ds_user_id=4766759462; ig_did=786DB252-6AAA-402B-8C42-458C3C320144;"
                 ],
             ]);
-            
+
             $response = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-            
+            curl_reset($ch);
+
+            // dd($response);
+
+
             if ($httpCode == 200 && $response) {
                 $data = json_decode($response, true);
                 
@@ -215,7 +221,7 @@ class ScraperController extends Controller
             }
             
         } catch (\Exception $e) {
-            \Log::error("Error scraping @{$username}: " . $e->getMessage());
+            Log::error("Error scraping @{$username}: " . $e->getMessage());
         }
         
         // Fallback: Generate sample data if scraping fails (for development/testing)
