@@ -169,23 +169,24 @@ class ScraperController extends Controller
         $posts = [];
 
         try {
-            // Cache wajib untuk library ini
             $cache = new Psr16Adapter('Files');
 
-            // Login (pakai akun IG biasa saja)
             $instagram = Instagram::withCredentials(
-                $cache,
                 'kangjulid.id_',
-                '1234567890-='
+                '1234567890-=',
+                $cache
             );
 
             $instagram->login();
 
             // Ambil akun
             $account = $instagram->getAccount($username);
+            dd($account);
 
             // Ambil postingan
             $medias = $instagram->getMedias($account->getUsername(), $limit);
+
+            dd($medias);
 
             foreach ($medias as $media) {
                 $posts[] = [
